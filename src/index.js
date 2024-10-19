@@ -1,5 +1,4 @@
 let numbers = {
-    0: "zero",
     1: "one",
     2: "two",
     3: "three",
@@ -13,6 +12,12 @@ let numbers = {
     11: "eleven",
     12: "twelve",
     13: "thirteen",
+    14: "fourteen",
+    15: "fifteen",
+    16: "sixteen",
+    17: "seventeen",
+    18: "eighteen",
+    19: "nineteen",
     20: "twenty",
     30: "thirty",
     40: "forty",
@@ -24,20 +29,18 @@ let numbers = {
 };
 
 module.exports = function toReadable(number) {
-    if (number <= 13) {
-        return numbers[number];
-    } else if (number <= 19) {
-        return `${numbers[number - 10]}teen`;
-    } else if (number <= 99) {
-        return `${numbers[number - (number % 10)]} ${numbers[number % 10]}${
-            number % 10 == 0 ? "zero" : ""
-        }`;
-    } else if (number <= 999) {
-        let hundred = number - (number % 100);
-        return `${numbers[hundred / 100]} hundred ${
-            numbers[number - hundred - (number % 10)]
-        }${(number - (number % 10)) % 100 == 0 ? "zero" : ""} ${
-            numbers[number % 10]
-        }${number % 10 == 0 ? "zero" : ""}`;
+    if (number === 0) return `zero`;
+    if (number < 20) return numbers[number];
+    if (number < 100) {
+        let lastOne = number % 10;
+        return `${numbers[number - lastOne]} ${
+            lastOne ? numbers[lastOne] : ""
+        }`.trim();
     }
+    let hundred = Math.floor(number / 100);
+    let gums = number % 100;
+    if (gums) {
+        return `${numbers[hundred]} hundred ${toReadable(number % 100)}`;
+    }
+    return `${numbers[hundred]} hundred`;
 };
